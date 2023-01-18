@@ -1,8 +1,13 @@
 package com.agust.hero.service.impl;
 
+import com.agust.hero.entity.Hero;
+import com.agust.hero.repository.HeroRepository;
+import com.agust.hero.service.HeroService;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.mockito.Mock;
+
+import java.util.List;
 
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
@@ -26,6 +31,10 @@ public class HeroServiceImplTest {
         when(heroRepository.findAll()).thenReturn(getHeroesList());
 
         Assertions.assertNotNull(heroService.findAll());
+    }
+
+    private List<Hero> getHeroesList() {
+        return List.of(HERO);
     }
 
 }
