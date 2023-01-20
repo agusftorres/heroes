@@ -75,10 +75,27 @@ public class HeroServiceImplTest {
         HeroService heroService = new HeroServiceImpl();
         ReflectionTestUtils.setField(heroService, "heroRepository", heroRepository);
 
-        when(heroRepository.save(HERO)).thenReturn(HERO_2);
+        when(heroRepository.findById(ID)).thenReturn(Optional.of(HERO_2));
+        when(heroRepository.save(HERO_2)).thenReturn(HERO_2);
 
-        final Hero updated = heroService.update(HERO);
+        final Hero updated = heroService.update(HERO_2);
         Assertions.assertEquals(HERO_2, updated);
+    }
+
+    @Test
+    public void testUpdateHero_NotFound_shouldThrowHeroNotFoundException(){
+        heroRepository = mock(HeroRepository.class);
+        HeroService heroService = new HeroServiceImpl();
+        ReflectionTestUtils.setField(heroService, "heroRepository", heroRepository);
+
+        when(heroRepository.findById(ID)).thenReturn(Optional.empty());
+
+        final Hero updated = heroService.update(HERO_2);
+        Assertions.assertEquals(HERO_2, updated);
+
+        Throwable throwable = catchThrowable(() -> heroService.findById(ID));
+        assertThat(throwable)
+                .isInstanceOf(HeroNotFoundException.class);
     }
 
     private List<Hero> getHeroesList() {
