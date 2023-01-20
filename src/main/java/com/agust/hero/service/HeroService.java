@@ -12,4 +12,6 @@ public interface HeroService {
     Hero findById(long id);
 
     Hero update(Hero hero);
+
+    String delete(long id);
 }

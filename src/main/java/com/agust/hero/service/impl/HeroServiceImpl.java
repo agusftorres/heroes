@@ -12,6 +12,7 @@ import java.util.Optional;
 
 @Service
 public class HeroServiceImpl implements HeroService {
+    private static final String INFORMATION = "Heroe eliminado.";
 
     @Autowired
     HeroRepository heroRepository;
@@ -32,5 +33,12 @@ public class HeroServiceImpl implements HeroService {
         return heroRepository.save(
                 existingHero.orElseThrow(HeroNotFoundException::new)
         );
+    }
+
+    @Override
+    public String delete(long id) {
+        Hero hero = heroRepository.findById(id).orElseThrow(HeroNotFoundException::new);
+        heroRepository.deleteById(hero.getId());
+        return INFORMATION;
     }
 }

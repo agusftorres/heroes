@@ -18,6 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 public class HeroServiceImplTest {
+    public static final String INFORMATION = "Heroe eliminado.";
     private final long ID = 12L;
     private final Hero HERO = Hero.builder()
             .id(ID)
@@ -104,7 +105,7 @@ public class HeroServiceImplTest {
         when(heroRepository.findById(ID)).thenReturn(Optional.of(HERO));
 
         final String deleted = heroService.delete(ID);
-        Assertions.assertEquals("Heroe eliminado.", deleted);
+        Assertions.assertEquals(INFORMATION, deleted);
     }
 
     @Test
