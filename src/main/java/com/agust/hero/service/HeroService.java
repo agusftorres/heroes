@@ -8,4 +8,6 @@ import java.util.List;
 @Component
 public interface HeroService {
     List<Hero> findAll();
+
+    Hero findById(long id);
 }
