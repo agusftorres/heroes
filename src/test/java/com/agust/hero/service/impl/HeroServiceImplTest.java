@@ -14,6 +14,7 @@ import java.util.Optional;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.assertj.core.api.ThrowableAssert.catchThrowable;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
@@ -119,6 +120,30 @@ public class HeroServiceImplTest {
         Throwable throwable = catchThrowable(() -> heroService.delete(ID));
         assertThat(throwable)
                 .isInstanceOf(HeroNotFoundException.class);
+    }
+
+    @Test
+    public void testFindHeroByString_everythingIsOk_shouldReturnAHero(){
+        heroRepository = mock(HeroRepository.class);
+        HeroService heroService = new HeroServiceImpl();
+        ReflectionTestUtils.setField(heroService, "heroRepository", heroRepository);
+
+        when(heroRepository.findByNameContaining(anyString())).thenReturn(getHeroesList());
+
+        final List<Hero> heroList = heroService.findByString("cap");
+        Assertions.assertNotNull(heroList);
+    }
+
+    @Test
+    public void testFindHeroByString_thereAreNotAnyHero_shouldReturnEmptyList(){
+        heroRepository = mock(HeroRepository.class);
+        HeroService heroService = new HeroServiceImpl();
+        ReflectionTestUtils.setField(heroService, "heroRepository", heroRepository);
+
+        when(heroRepository.findByNameContaining(anyString())).thenReturn(List.of());
+
+        final List<Hero> heroList = heroService.findByString("cap");
+        Assertions.assertEquals(0,heroList.size());
     }
     private List<Hero> getHeroesList() {
         return List.of(HERO);
