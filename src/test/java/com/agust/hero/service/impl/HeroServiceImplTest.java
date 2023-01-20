@@ -95,6 +95,30 @@ public class HeroServiceImplTest {
                 .isInstanceOf(HeroNotFoundException.class);
     }
 
+    @Test
+    public void testDeleteHero_everythingIsOk_shouldReturnDeletedInformation(){
+        heroRepository = mock(HeroRepository.class);
+        HeroService heroService = new HeroServiceImpl();
+        ReflectionTestUtils.setField(heroService, "heroRepository", heroRepository);
+
+        when(heroRepository.findById(ID)).thenReturn(Optional.of(HERO));
+
+        final String deleted = heroService.delete(ID);
+        Assertions.assertEquals("Heroe eliminado.", deleted);
+    }
+
+    @Test
+    public void testDeleteHero_notFound_shouldThrowHeroNotFound(){
+        heroRepository = mock(HeroRepository.class);
+        HeroService heroService = new HeroServiceImpl();
+        ReflectionTestUtils.setField(heroService, "heroRepository", heroRepository);
+
+        when(heroRepository.findById(ID)).thenReturn(Optional.empty());
+
+        Throwable throwable = catchThrowable(() -> heroService.delete(ID));
+        assertThat(throwable)
+                .isInstanceOf(HeroNotFoundException.class);
+    }
     private List<Hero> getHeroesList() {
         return List.of(HERO);
     }
