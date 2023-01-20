@@ -10,4 +10,6 @@ public interface HeroService {
     List<Hero> findAll();
 
     Hero findById(long id);
+
+    Hero update(Hero hero);
 }

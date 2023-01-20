@@ -2,8 +2,6 @@ package com.agust.hero.service.impl;
 
 import com.agust.hero.entity.Hero;
 import com.agust.hero.exception.HeroNotFoundException;
-import com.agust.hero.exceptionhandler.ErrorCode;
-import com.agust.hero.exceptionhandler.GenericException;
 import com.agust.hero.repository.HeroRepository;
 import com.agust.hero.service.HeroService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,5 +24,13 @@ public class HeroServiceImpl implements HeroService {
     @Override
     public Hero findById(long id) {
         return heroRepository.findById(id).orElseThrow(HeroNotFoundException::new);
+    }
+
+    @Override
+    public Hero update(Hero hero) {
+        Optional<Hero> existingHero = heroRepository.findById(hero.getId());
+        return heroRepository.save(
+                existingHero.orElseThrow(HeroNotFoundException::new)
+        );
     }
 }

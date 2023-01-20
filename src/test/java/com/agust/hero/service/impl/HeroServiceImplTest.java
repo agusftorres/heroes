@@ -90,10 +90,7 @@ public class HeroServiceImplTest {
 
         when(heroRepository.findById(ID)).thenReturn(Optional.empty());
 
-        final Hero updated = heroService.update(HERO_2);
-        Assertions.assertEquals(HERO_2, updated);
-
-        Throwable throwable = catchThrowable(() -> heroService.findById(ID));
+        Throwable throwable = catchThrowable(() -> heroService.update(HERO_2));
         assertThat(throwable)
                 .isInstanceOf(HeroNotFoundException.class);
     }
