@@ -21,8 +21,13 @@ public class HeroServiceImplTest {
     private final long ID = 12L;
     private final Hero HERO = Hero.builder()
             .id(ID)
-            .name("Superman")
-            .identity("Clark Kent")
+            .name("Capitan America")
+            .identity("Steve Rogers")
+            .build();
+    private final Hero HERO_2 = Hero.builder()
+            .id(ID)
+            .name("Capitan America")
+            .identity("Sam Wilson")
             .build();
 
     @Mock
@@ -62,6 +67,18 @@ public class HeroServiceImplTest {
         Throwable throwable = catchThrowable(() -> heroService.findById(ID));
         assertThat(throwable)
                 .isInstanceOf(HeroNotFoundException.class);
+    }
+
+    @Test
+    public void testUpdateHero_everythingIsOk_shouldReturnAUpdatedHero(){
+        heroRepository = mock(HeroRepository.class);
+        HeroService heroService = new HeroServiceImpl();
+        ReflectionTestUtils.setField(heroService, "heroRepository", heroRepository);
+
+        when(heroRepository.save(HERO)).thenReturn(HERO_2);
+
+        final Hero updated = heroService.update(HERO);
+        Assertions.assertEquals(HERO_2, updated);
     }
 
     private List<Hero> getHeroesList() {
